@@ -12,10 +12,12 @@ SSH_CONFIG_FILE="$HOME/.ssh/config"
 if [[ ! -f ${SSH_CONFIG_FILE} ]]; then
     echo "Creating SSH config file"
     cp ssh/config ${SSH_CONFIG_FILE}
-    chmod 600 ${SSH_CONFIG_FILE}
 else
     echo "SSH config file already exists, skipping"
 fi
+
+chmod 600 ${SSH_CONFIG_FILE}
+
 
 SSH_CONF_D="$HOME/.ssh/conf.d"
 
@@ -38,7 +40,7 @@ else
     echo "SSH config for GitHub already exists, skipping"
 fi
 
-chmod 700 ${SSH_GIT_HUB_CONFIG_DEST}
+chmod 600 ${SSH_GIT_HUB_CONFIG_DEST}
 
 SSH_GIT_HUB_KEY="$HOME/.ssh/github-key"
 
@@ -55,6 +57,18 @@ ssh-keygen -t ed25519 -C "$USER_EMAIL" -f ${SSH_GIT_HUB_KEY} -N ""
 echo "SSH key for GitHub created at ${SSH_GIT_HUB_KEY}"
 echo "Public key:"
 cat ${SSH_GIT_HUB_KEY}.pub
+
+OS="$(uname -s)"
+
+if [[ "$OS" == "Darwin" ]]; then
+    echo "Adding SSH key to the ssh-agent"
+    ssh-add --apple-use-keychain ${SSH_GIT_HUB_KEY}
+
+elif [[ "$OS" == "Linux" ]]; then
+else
+    echo "Unknown OS: $OS"
+    exit 1
+fi
 
 echo "Add the above public key to your GitHub account..."
 
