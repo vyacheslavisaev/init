@@ -17,7 +17,7 @@ else
     echo "SSH config file already exists, skipping"
 fi
 
-SSH_CONF_D="$HOME/.ssh/config.d"
+SSH_CONF_D="$HOME/.ssh/conf.d"
 
 if [[ ! -d ${SSH_CONF_D} ]]; then
     echo "Creating SSH config.d directory"
@@ -26,7 +26,9 @@ else
     echo "SSH config.d directory already exists, skipping"
 fi
 
-SSH_GIT_HUB_CONFIG_SRC="${SCRIPT_DIR}/ssh/github.conf"
+chmod 700 ${SSH_CONF_D}
+
+SSH_GIT_HUB_CONFIG_SRC="${SCRIPT_DIR}/ssh/conf.d/github.conf"
 SSH_GIT_HUB_CONFIG_DEST="$SSH_CONF_D/github.conf"
 
 if [[ ! -f ${SSH_GIT_HUB_CONFIG_DEST} ]]; then
@@ -35,6 +37,8 @@ if [[ ! -f ${SSH_GIT_HUB_CONFIG_DEST} ]]; then
 else
     echo "SSH config for GitHub already exists, skipping"
 fi
+
+chmod 700 ${SSH_GIT_HUB_CONFIG_DEST}
 
 SSH_GIT_HUB_KEY="$HOME/.ssh/github-key"
 
