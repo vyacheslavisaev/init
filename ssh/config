@@ -1,0 +1,7 @@
+Host *
+  ServerAliveInterval 30
+  ServerAliveCountMax 5
+  UseKeychain yes
+  ForwardAgent yes
+  ForwardX11 yes
+  Include conf.d/*
